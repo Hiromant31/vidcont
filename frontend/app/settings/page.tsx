@@ -20,6 +20,10 @@ export default function SettingsPage() {
     mutationFn: (data: Partial<Settings>) => settingsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings created successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to create settings: ${error.message}`);
     },
   });
 
@@ -28,6 +32,10 @@ export default function SettingsPage() {
       settingsApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings updated successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to update settings: ${error.message}`);
     },
   });
 
@@ -35,11 +43,15 @@ export default function SettingsPage() {
     mutationFn: (id: string) => settingsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings deleted successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to delete settings: ${error.message}`);
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading settings</div>;
+  if (error) return <div>Error loading settings: {error.message}</div>;
 
   return (
     <div className="space-y-6">

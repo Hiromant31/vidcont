@@ -20,6 +20,10 @@ export default function JobsPage() {
     mutationFn: (id: string) => jobsApi.stop(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      alert('Job stopped successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to stop job: ${error.message}`);
     },
   });
 
@@ -27,11 +31,15 @@ export default function JobsPage() {
     mutationFn: (id: string) => jobsApi.retry(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      alert('Job restarted successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to retry job: ${error.message}`);
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading jobs</div>;
+  if (error) return <div>Error loading jobs: {error.message}</div>;
 
   const getStatusColor = (status: Job['status']) => {
     switch (status) {

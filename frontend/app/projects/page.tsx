@@ -25,6 +25,10 @@ export default function ProjectsPage() {
       setShowCreateForm(false);
       setNewProjectName('');
       setNewProjectDescription('');
+      alert('Project created successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to create project: ${error.message}`);
     },
   });
 
@@ -33,6 +37,10 @@ export default function ProjectsPage() {
       projectsApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      alert('Project updated successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to update project: ${error.message}`);
     },
   });
 
@@ -40,6 +48,10 @@ export default function ProjectsPage() {
     mutationFn: (id: string) => projectsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      alert('Project deleted successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to delete project: ${error.message}`);
     },
   });
 
@@ -53,7 +65,7 @@ export default function ProjectsPage() {
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading projects</div>;
+  if (error) return <div>Error loading projects: {error.message}</div>;
 
   return (
     <div className="space-y-6">

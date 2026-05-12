@@ -30,6 +30,10 @@ export default function PromptsPage() {
       queryClient.invalidateQueries({ queryKey: ['prompts'] });
       setShowCreateForm(false);
       resetForm();
+      alert('Prompt created successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to create prompt: ${error.message}`);
     },
   });
 
@@ -40,6 +44,10 @@ export default function PromptsPage() {
       queryClient.invalidateQueries({ queryKey: ['prompts'] });
       setEditingPrompt(null);
       resetForm();
+      alert('Prompt updated successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to update prompt: ${error.message}`);
     },
   });
 
@@ -47,6 +55,10 @@ export default function PromptsPage() {
     mutationFn: (id: string) => promptsApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['prompts'] });
+      alert('Prompt deleted successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to delete prompt: ${error.message}`);
     },
   });
 
@@ -81,7 +93,7 @@ export default function PromptsPage() {
   };
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading prompts</div>;
+  if (error) return <div>Error loading prompts: {error.message}</div>;
 
   return (
     <div className="space-y-6">
