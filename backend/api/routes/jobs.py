@@ -9,11 +9,11 @@ from orchestration.job_manager import JobManager
 router = APIRouter()
 job_manager = JobManager()
 
-@router.get("/", response_model=JobListResponse)
+@router.get("/", response_model=List[JobResponse])
 async def get_jobs():
     """Получить список всех задач"""
     jobs = job_manager.get_all_jobs()
-    return JobListResponse(jobs=jobs, total=len(jobs))
+    return jobs
 
 @router.get("/{job_id}", response_model=JobResponse)
 async def get_job(job_id: str):

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings as app_settings
 from core.logger import setup_logger
-from api.routes import health, jobs, pipeline, projects, story, characters, scenes, settings_routes, manifest, render
+from api.routes import health, jobs, pipeline, projects, story, characters, scenes, settings, manifest, render
 from websocket.manager import WebSocketManager, get_websocket_manager
 
 logger = setup_logger(__name__)
@@ -28,7 +28,7 @@ def create_app() -> FastAPI:
     app.include_router(story.router, prefix="/api/story", tags=["Story"])
     app.include_router(characters.router, prefix="/api/characters", tags=["Characters"])
     app.include_router(scenes.router, prefix="/api/scenes", tags=["Scenes"])
-    app.include_router(settings_routes.router, prefix="/api/settings", tags=["Settings"])
+    app.include_router(settings.router, prefix="/api/settings", tags=["Settings"])
     app.include_router(manifest.router, prefix="/api/manifest", tags=["Manifest"])
     app.include_router(render.router, prefix="/api/render", tags=["Render"])
     

@@ -103,12 +103,14 @@ async def create_settings(request: CreateSettingsRequest):
 
 
 @router.get("/{settings_id}", response_model=SettingsResponse, tags=["Settings"])
-async def get_settings(settings_id: str):
+async def get_settings_by_id(settings_id: str):
     """
     Get settings by ID.
     """
     try:
         settings = settings_manager.get_settings(settings_id)
+        if not settings:
+            raise HTTPException(status_code=404, detail=f"Settings '{settings_id}' not found")
         
         return SettingsResponse(
             settings_id=settings.settings_id,
@@ -121,8 +123,8 @@ async def get_settings(settings_id: str):
             created_at=settings.created_at,
             updated_at=settings.updated_at
         )
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get settings: {str(e)}")
 
@@ -168,8 +170,8 @@ async def delete_settings(settings_id: str):
         raise HTTPException(status_code=500, detail=f"Settings deletion failed: {str(e)}")
 
 
-@router.get("/list", response_model=List[SettingsResponse], tags=["Settings"])
-async def list_settings():
+@router.get("/all", response_model=List[SettingsResponse], tags=["Settings"])
+async def list_all_settings():
     """
     List all available settings.
     """
@@ -191,6 +193,14 @@ async def list_settings():
         ]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to list settings: {str(e)}")
+
+
+@router.get("/list", response_model=List[SettingsResponse], tags=["Settings"])
+async def list_settings():
+    """
+    List all available settings (alias).
+    """
+    return await list_all_settings()
 
 
 @router.post("/channel/create", response_model=ChannelResponse, tags=["Settings"])
