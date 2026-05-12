@@ -122,18 +122,21 @@ npm run type-check
 
 ## 4. СТАТУС РЕАЛИЗАЦИИ МОДУЛЕЙ
 
-| Модуль | Блок | Статус | Описание |
-| :--- | :---: | :---: | :--- |
-| **Core Architecture** | F1 | ✅ **READY** | Роутинг, лейауты, провайдеры, базовые стили |
-| **Projects System** | F2 | ✅ **READY** | CRUD проектов, фильтры, поиск, статистика |
-| **Pipeline Control** | F3 | ✅ **READY** | Визуализация этапов, контроль запуска, логи |
-| **Jobs & Queue** | F4 | ✅ **READY** | Таблица задач, очередь, retry/cancel, логи |
-| **Prompts Management** | F5 | ✅ **READY** | Редактор промптов, переменные, валидация, версии |
-| **AI Settings** | F6 | ✅ **READY** | Настройки провайдеров, API ключей, рендера |
-| **Scene Editor** | F7 | ✅ **READY** | Редактор сцен, таймлайн, слои, превью |
-| **Character System** | F8 | ✅ **READY** | Персонажи, референсы, консистентность |
-| **Realtime System** | F9 | ✅ **READY** | WebSocket клиент, event bus, reconnect |
-| **Render & Export** | F10 | ✅ **READY** | Очередь рендера, экспорт, скачивание |
+| Модуль | Блок | Статус | Описание | Директория |
+| :--- | :---: | :---: | :--- | :--- |
+| **Core Architecture** | F1 | ✅ **READY** | Роутинг, лейауты, провайдеры, базовые стили | `app/`, `providers/` |
+| **Projects System** | F2 | ✅ **READY** | CRUD проектов, фильтры, поиск, статистика | `modules/projects/` |
+| **Pipeline Control** | F3 | ✅ **READY** | Визуализация этапов, контроль запуска, логи | `modules/pipeline/` |
+| **Jobs & Queue** | F4 | ✅ **READY** | Таблица задач, очередь, retry/cancel, логи | `modules/jobs/` |
+| **Prompts Management** | F5 | ✅ **READY** | Редактор промптов, переменные, валидация, версии | `modules/prompts/` |
+| **AI Settings** | F6 | ✅ **READY** | Настройки провайдеров, API ключей, рендера | `modules/settings/` |
+| **Scene Editor** | F7 | ✅ **READY** | Редактор сцен, таймлайн, слои, превью | `modules/scenes/` |
+| **Character System** | F8 | ✅ **READY** | Персонажи, референсы, консистентность | `modules/characters/` |
+| **Realtime System** | F9 | ✅ **READY** | WebSocket клиент, event bus, reconnect | `modules/realtime/` |
+| **Render & Export** | F10 | ✅ **READY** | Очередь рендера, экспорт, скачивание | `modules/render/` |
+| **Assets Library** | F11 | ✅ **READY** | Хранилище медиа, переиспользование ассетов | `modules/assets/` |
+| **Channels + Templates** | F12 | ✅ **READY** | Каналы контента, шаблоны генерации | `modules/channels/` |
+| **Analytics System** | F13 | ✅ **READY** | Дашборд метрик, мониторинг системы | `modules/analytics/` |
 
 ---
 
@@ -297,11 +300,14 @@ useEventSubscription('job_progress', (data) => {
 
 ## 10. ПЛАНЫ РАЗВИТИЯ (ROADMAP)
 
-- [ ] **F11: Assets Library** — Библиотека всех сгенерированных ассетов.
-- [ ] **F12: User Profiles** — Система профилей и командной работы.
-- [ ] **F13: Analytics** — Дашборд статистики использования и затрат.
-- [ ] **Mobile Adaptation** — Адаптация интерфейса под планшеты.
-- [ ] **Offline Mode** — Кэширование для работы без сети (PWA).
+Все основные модули (F1-F13) реализованы. Следующие шаги:
+
+- [ ] **Интеграционное тестирование** — E2E тесты для критических путей (Cypress/Playwright).
+- [ ] **Unit тестирование** — Покрытие хуков и утилит тестами (Jest/Vitest).
+- [ ] **Оптимизация производительности** — Code splitting, lazy loading тяжелых компонентов.
+- [ ] **PWA** — Добавление Service Worker для офлайн режима и кэширования ассетов.
+- [ ] **Мультиязычность (i18n)** — Поддержка EN/RU интерфейса.
+- [ ] **Доступность (a11y)** — Улучшение поддержки скринридеров и навигации с клавиатуры.
 
 ---
 

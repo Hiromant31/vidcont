@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { webSocketService } from '@/services/websocket/service';
 import { useQueryClient } from '@tanstack/react-query';

@@ -1,3 +1,5 @@
+'use client';
+
 import { Copy, Check } from 'lucide-react';
 import { useState } from 'react';
 import { usePromptPreview } from '../hooks/usePromptPreview';

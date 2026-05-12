@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useSettingsStore } from '../stores/settings_store';
 
