@@ -64,7 +64,7 @@ export default function PromptsPage() {
     setEditingPrompt(prompt);
     setFormData({
       name: prompt.name || '',
-      stage: prompt.stage || 'story',
+      stage: prompt.stage || prompt.type || 'story',
       content: prompt.content || '',
       genre: prompt.genre || 'general',
       style: prompt.style || 'narrative',
@@ -171,16 +171,16 @@ export default function PromptsPage() {
           </Card>
         ) : (
           prompts.map((prompt) => (
-            <Card key={prompt.template_id}>
+            <Card key={prompt.template_id || prompt.id}>
               <CardHeader>
                 <CardTitle className="text-lg">{prompt.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Stage: {prompt.stage}
+                  Stage: {prompt.stage || prompt.type}
                 </p>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                  {prompt.content}
+                  {prompt.content || 'No content'}
                 </p>
                 <div className="flex space-x-2">
                   <Button 
@@ -195,7 +195,7 @@ export default function PromptsPage() {
                     size="sm"
                     onClick={() => {
                       if (confirm('Are you sure you want to delete this prompt?')) {
-                        deleteMutation.mutate(prompt.template_id);
+                        deleteMutation.mutate(prompt.template_id || prompt.id);
                       }
                     }}
                   >

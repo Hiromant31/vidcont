@@ -1,28 +1,49 @@
 ```
-# Compiled Python files
-*.pyc
-__pycache__/
+# Dependencies
+node_modules/
 
-# Logs
-*.log
-storage/logs/
+# Build outputs
+dist/
+build/
+.next/
+out/
 
-# Environment files
+# Environment variables
 .env
 .env.local
 *.env.*
 
-# Dependencies
-.venv/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
 venv/
-node_modules/
+.venv/
+.ENV
+.python-version
 
-# Editors
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
 .vscode/
 .idea/
-
-# Build artifacts
-dist/
-build/
-target/
+*.swp
+*.swo
+*~
 ```

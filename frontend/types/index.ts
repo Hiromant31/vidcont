@@ -20,14 +20,19 @@ export interface Job {
 
 export interface PromptTemplate {
   template_id: string;
+  id?: string;
   name: string;
-  stage: string;
-  content: string;
+  stage?: string;
+  type?: string;
+  content?: string;
   variables: string[];
-  version: number;
-  channel_id: string;
-  created_at: string;
-  updated_at: string;
+  version: number | string;
+  channel_id?: string;
+  genre?: string;
+  style?: string;
+  prompts?: any[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Scene {
