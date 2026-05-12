@@ -1,19 +1,24 @@
 ```
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Dependencies
 node_modules/
-
-# Build outputs
-dist/
-build/
-.next/
-out/
-
-# Environment variables
+venv/
+.venv/
 .env
 .env.local
 *.env.*
 
-# IDE specific
+# Build artifacts
+dist/
+build/
+target/
+
+# Editors
 .vscode/
 .idea/
 *.swp
@@ -22,25 +27,13 @@ out/
 # Logs
 *.log
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
+# Coverage
 .coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git/modules/
+coverage/
+htmlcov/
+
+# Temp files
+*.tmp
 .DS_Store
+Thumbs.db
 ```

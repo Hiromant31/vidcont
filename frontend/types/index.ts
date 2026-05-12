@@ -91,3 +91,23 @@ export interface WebSocketMessage {
   data: any;
   timestamp: string;
 }
+
+export interface PipelineStage {
+  name: string;
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
+  started_at?: string;
+  completed_at?: string;
+  progress?: number;
+  message?: string;
+  error?: string;
+}
+
+export interface PipelineStatus {
+  job_id: string;
+  status: string;
+  current_stage: string | null;
+  stages: PipelineStage[];
+  progress: number;
+  created_at: string;
+  updated_at: string;
+}

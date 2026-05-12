@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ConnectionStatus } from '@/components/realtime/connection_status';
+import { GenerateVideoPanel } from '@/components/generate/generate_video_panel';
 
 export default function DashboardPage() {
   return (
@@ -9,6 +10,9 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <ConnectionStatus />
       </div>
+
+      {/* Generate Video Panel - главная функция */}
+      <GenerateVideoPanel />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
