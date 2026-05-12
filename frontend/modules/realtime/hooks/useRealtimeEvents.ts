@@ -2,14 +2,15 @@ import { useEffect } from 'react';
 import { eventBus } from '../core/event_bus';
 import { RealtimeEvent, EventType } from '../types/realtime_types';
 
-export function useEventSubscription<T = any>(
+export function useRealtimeEvents<T>(
   eventType: EventType | '*',
-  callback: (event: RealtimeEvent<T>) => void
-): void {
+  handler: (event: RealtimeEvent<T>) => void
+) {
   useEffect(() => {
-    const unsubscribe = eventBus.on(eventType, callback as any);
+    const unsubscribe = eventBus.on(eventType, handler);
+
     return () => {
       unsubscribe();
     };
-  }, [eventType, callback]);
+  }, [eventType, handler]);
 }
