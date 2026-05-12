@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useUpdateSettings, useTestConnection } from '../api/settings_queries';
 import { useSettingsStore } from '../stores/settings_store';

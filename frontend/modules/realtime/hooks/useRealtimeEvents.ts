@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { eventBus } from '../core/event_bus';
 import { RealtimeEvent, EventType } from '../types/realtime_types';

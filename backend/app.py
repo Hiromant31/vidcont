@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from core.logger import setup_logger
 from api.routes import health, jobs, pipeline
-from websocket.manager import WebSocketManager
+from websocket.manager import WebSocketManager, get_websocket_manager
 
 logger = setup_logger(__name__)
 
@@ -34,8 +34,9 @@ def create_app() -> FastAPI:
     app.include_router(jobs.router, prefix="/api/jobs", tags=["Jobs"])
     app.include_router(pipeline.router, prefix="/api/pipeline", tags=["Pipeline"])
     
-    # WebSocket endpoint
-    app.add_websocket_route("/ws", WebSocketManager().connect)
+    # WebSocket endpoint - use singleton manager instance
+    ws_manager = get_websocket_manager()
+    app.add_websocket_route("/ws", ws_manager.connect)
     
     # Lifecycle events
     @app.on_event("startup")

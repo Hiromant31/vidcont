@@ -1,1 +1,32 @@
-(project_passport_front.md is a markdown file, which is source content that should not be ignored)
+```gitignore
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dependencies
+venv/
+.venv/
+.env
+.env.local
+.env.*
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Editors
+.vscode/
+.idea/
+
+# Coverage reports
+.coverage
+coverage/
+htmlcov/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+```
