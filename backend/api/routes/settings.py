@@ -203,6 +203,14 @@ async def list_settings():
     return await list_all_settings()
 
 
+@router.get("/", response_model=List[SettingsResponse], tags=["Settings"])
+async def get_default_settings():
+    """
+    Get default settings (returns all settings for now).
+    """
+    return await list_all_settings()
+
+
 @router.post("/channel/create", response_model=ChannelResponse, tags=["Settings"])
 async def create_channel(request: CreateChannelRequest):
     """
