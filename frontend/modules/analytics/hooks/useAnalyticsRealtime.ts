@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { ANALYTICS_KEYS } from '../api/analytics_queries';

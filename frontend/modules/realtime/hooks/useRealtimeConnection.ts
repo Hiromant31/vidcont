@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useCallback } from 'react';
 import { useRealtimeStore } from '../stores/realtime_store';
 import { realtimeClient } from '../core/realtime_client';

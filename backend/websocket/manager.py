@@ -24,6 +24,17 @@ class WebSocketManager:
             self.active_connections[connection_id] = set()
         self.active_connections[connection_id].add(websocket)
         logger.info(f"WebSocket client connected: {connection_id}")
+        
+        # Keep connection alive with receive loop
+        try:
+            while True:
+                # Receive messages to keep connection alive
+                data = await websocket.receive_text()
+                logger.debug(f"Received message from {connection_id}: {data}")
+        except Exception as e:
+            logger.info(f"WebSocket connection closed for {connection_id}: {e}")
+        finally:
+            self.disconnect(websocket, connection_id)
     
     def disconnect(self, websocket: WebSocket, connection_id: str):
         """Отключить клиента"""

@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useEventSubscription } from './useEventSubscription';
 import { useRealtimeStore } from '../stores/realtime_store';
