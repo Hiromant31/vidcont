@@ -2,14 +2,33 @@ import { apiClient } from './client';
 import type { Settings, PromptTemplate, RenderJob } from '@/types';
 
 export const settingsApi = {
-  async get(): Promise<Settings> {
+  async get(): Promise<Settings[]> {
     const response = await apiClient.get('/settings');
     return response.data;
   },
 
-  async update(data: Partial<Settings>): Promise<Settings> {
-    const response = await apiClient.put('/settings', data);
+  async getAll(): Promise<Settings[]> {
+    const response = await apiClient.get('/settings/all');
     return response.data;
+  },
+
+  async getById(id: string): Promise<Settings> {
+    const response = await apiClient.get(`/settings/${id}`);
+    return response.data;
+  },
+
+  async create(data: Partial<Settings>): Promise<Settings> {
+    const response = await apiClient.post('/settings/create', data);
+    return response.data;
+  },
+
+  async update(id: string, data: Partial<Settings>): Promise<Settings> {
+    const response = await apiClient.put(`/settings/${id}`, data);
+    return response.data;
+  },
+
+  async delete(id: string): Promise<void> {
+    await apiClient.delete(`/settings/${id}`);
   },
 };
 

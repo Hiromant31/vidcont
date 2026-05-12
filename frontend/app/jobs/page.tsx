@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { jobsApi } from '@/services/api/jobs';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,10 +8,26 @@ import { ProgressBar } from '@/components/feedback/progress_bar';
 import type { Job } from '@/types';
 
 export default function JobsPage() {
+  const queryClient = useQueryClient();
+
   const { data: jobs = [], isLoading, error, refetch } = useQuery({
     queryKey: ['jobs'],
     queryFn: () => jobsApi.getAll(),
     refetchInterval: 5000,
+  });
+
+  const stopMutation = useMutation({
+    mutationFn: (id: string) => jobsApi.stop(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+    },
+  });
+
+  const retryMutation = useMutation({
+    mutationFn: (id: string) => jobsApi.retry(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+    },
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -66,12 +82,40 @@ export default function JobsPage() {
                   )}
                 </div>
                 <div className="mt-4 flex space-x-2">
-                  <Button variant="outline" size="sm">View Details</Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      alert(`Job Details:\nID: ${job.job_id}\nStatus: ${job.status}\nProgress: ${job.progress}%\nStage: ${job.current_stage || 'N/A'}`);
+                    }}
+                  >
+                    View Details
+                  </Button>
                   {job.status === 'running' && (
-                    <Button variant="destructive" size="sm">Stop</Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      onClick={() => {
+                        if (confirm('Are you sure you want to stop this job?')) {
+                          stopMutation.mutate(job.job_id);
+                        }
+                      }}
+                      disabled={stopMutation.isPending}
+                    >
+                      {stopMutation.isPending ? 'Stopping...' : 'Stop'}
+                    </Button>
                   )}
                   {job.status === 'failed' && (
-                    <Button variant="secondary" size="sm">Retry</Button>
+                    <Button 
+                      variant="secondary" 
+                      size="sm"
+                      onClick={() => {
+                        retryMutation.mutate(job.job_id);
+                      }}
+                      disabled={retryMutation.isPending}
+                    >
+                      {retryMutation.isPending ? 'Retrying...' : 'Retry'}
+                    </Button>
                   )}
                 </div>
               </CardContent>
