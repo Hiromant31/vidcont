@@ -102,59 +102,6 @@ async def create_settings(request: CreateSettingsRequest):
         raise HTTPException(status_code=500, detail=f"Settings creation failed: {str(e)}")
 
 
-@router.get("/{settings_id}", response_model=SettingsResponse, tags=["Settings"])
-async def get_settings_by_id(settings_id: str):
-    """
-    Get settings by ID.
-    """
-    try:
-        settings = settings_manager.get_settings(settings_id)
-        if not settings:
-            raise HTTPException(status_code=404, detail=f"Settings '{settings_id}' not found")
-        
-        return SettingsResponse(
-            settings_id=settings.settings_id,
-            ai_provider=settings.ai_provider,
-            model=settings.model,
-            api_key=settings.api_key,
-            folder_id=settings.folder_id,
-            default_quality=settings.default_quality,
-            auto_continue_pipeline=settings.auto_continue_pipeline,
-            created_at=settings.created_at,
-            updated_at=settings.updated_at
-        )
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get settings: {str(e)}")
-
-
-@router.patch("/{settings_id}", response_model=SettingsResponse, tags=["Settings"])
-async def update_settings(settings_id: str, request: UpdateSettingsRequest):
-    """
-    Update settings with partial data.
-    """
-    try:
-        patch_data = request.model_dump(exclude_unset=True)
-        settings = settings_manager.update_settings(settings_id, patch_data)
-        
-        return SettingsResponse(
-            settings_id=settings.settings_id,
-            ai_provider=settings.ai_provider,
-            model=settings.model,
-            api_key=settings.api_key,
-            folder_id=settings.folder_id,
-            default_quality=settings.default_quality,
-            auto_continue_pipeline=settings.auto_continue_pipeline,
-            created_at=settings.created_at,
-            updated_at=settings.updated_at
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Settings update failed: {str(e)}")
-
-
 @router.delete("/{settings_id}", tags=["Settings"])
 async def delete_settings(settings_id: str):
     """
@@ -195,20 +142,76 @@ async def list_all_settings():
         raise HTTPException(status_code=500, detail=f"Failed to list settings: {str(e)}")
 
 
-@router.get("/list", response_model=List[SettingsResponse], tags=["Settings"])
-async def list_settings():
-    """
-    List all available settings (alias).
-    """
-    return await list_all_settings()
-
-
 @router.get("/", response_model=List[SettingsResponse], tags=["Settings"])
 async def get_default_settings():
     """
     Get default settings (returns all settings for now).
     """
     return await list_all_settings()
+
+
+@router.get("/prompts", response_model=List[Dict[str, Any]], tags=["Settings"])
+async def list_prompts():
+    """
+    List all available prompt packs.
+    """
+    try:
+        # Return mock prompt packs for now
+        return [
+            {
+                "id": "story_basic",
+                "name": "Basic Story Prompts",
+                "type": "story",
+                "genre": "general",
+                "style": "narrative",
+                "version": "1.0"
+            },
+            {
+                "id": "character_fantasy",
+                "name": "Fantasy Character Prompts",
+                "type": "character",
+                "genre": "fantasy",
+                "style": "detailed",
+                "version": "1.0"
+            },
+            {
+                "id": "scene_cinematic",
+                "name": "Cinematic Scene Prompts",
+                "type": "scene",
+                "genre": "general",
+                "style": "cinematic",
+                "version": "1.0"
+            }
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list prompts: {str(e)}")
+
+
+@router.get("/{settings_id}", response_model=SettingsResponse, tags=["Settings"])
+async def get_settings_by_id(settings_id: str):
+    """
+    Get settings by ID.
+    """
+    try:
+        settings = settings_manager.get_settings(settings_id)
+        if not settings:
+            raise HTTPException(status_code=404, detail=f"Settings '{settings_id}' not found")
+        
+        return SettingsResponse(
+            settings_id=settings.settings_id,
+            ai_provider=settings.ai_provider,
+            model=settings.model,
+            api_key=settings.api_key,
+            folder_id=settings.folder_id,
+            default_quality=settings.default_quality,
+            auto_continue_pipeline=settings.auto_continue_pipeline,
+            created_at=settings.created_at,
+            updated_at=settings.updated_at
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get settings: {str(e)}")
 
 
 @router.post("/channel/create", response_model=ChannelResponse, tags=["Settings"])
