@@ -6,9 +6,21 @@ export const mapEventToStore = (event: RealtimeEvent): void => {
   
   switch (event.type) {
     case 'job_progress':
+    case 'job_started':
     case 'job_completed':
     case 'job_failed':
       // Jobs module will handle these
+      break;
+      
+    case 'pipeline_stage_started':
+    case 'pipeline_stage_progress':
+    case 'pipeline_stage_completed':
+      // Pipeline module will handle these
+      break;
+      
+    case 'project_updated':
+    case 'project_created':
+      // Projects module will handle these
       break;
       
     case 'scene_updated':
@@ -18,14 +30,6 @@ export const mapEventToStore = (event: RealtimeEvent): void => {
       
     case 'character_updated':
       // Characters module will handle these
-      break;
-      
-    case 'pipeline_updated':
-      // Pipeline module will handle these
-      break;
-      
-    case 'queue_updated':
-      // Queue module will handle these
       break;
       
     case 'log_stream':

@@ -47,11 +47,19 @@ export class RealtimeClient {
       this.ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
+          // Handle ping response
+          if (data.type === 'pong') {
+            this.health = { ...this.health, lastPing: new Date().toISOString(), latencyMs: Date.now() - new Date(data.timestamp).getTime() };
+            return;
+          }
+
           const realtimeEvent: RealtimeEvent = {
-            ...data,
+            type: data.type,
+            payload: data.payload || data.data,
             timestamp: data.timestamp || new Date().toISOString(),
+            source: data.source || 'system',
           };
-          eventBus.emit(realtimeEvent);
+          eventBus.emit(realtimeEvent.type, realtimeEvent.payload, realtimeEvent.source);
         } catch (e) {
           console.error('[Realtime] Failed to parse message:', e);
         }
@@ -84,7 +92,6 @@ export class RealtimeClient {
     this.heartbeatInterval = setInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
         this.ws.send(JSON.stringify({ type: 'ping', timestamp: new Date().toISOString() }));
-        this.health = { ...this.health, lastPing: new Date().toISOString() };
       }
     }, 30000); // 30s heartbeat
   }
@@ -100,22 +107,12 @@ export class RealtimeClient {
     this.connectionStatus = status;
     this.health = { ...this.health, status, retryCount: this.reconnectManager.getRetryCount() };
     
-    eventBus.emit({
-      type: 'connection_status_changed',
-      payload: this.health,
-      timestamp: new Date().toISOString(),
-      source: 'system',
-    });
+    eventBus.emit('connection_status_changed', this.health, 'system');
   }
 
   private handleFailed(): void {
     console.error('[Realtime] Connection failed after max retries');
-    eventBus.emit({
-      type: 'system_alert',
-      payload: { message: 'Connection lost. Please refresh the page.' },
-      timestamp: new Date().toISOString(),
-      source: 'system',
-    });
+    eventBus.emit('system_alert', { message: 'Connection lost. Please refresh the page.' }, 'system');
   }
 
   getStatus(): ConnectionStatus {
@@ -137,3 +134,5 @@ export const getRealtimeClient = (wsUrl?: string): RealtimeClient => {
   }
   return clientInstance;
 };
+
+export const realtimeClient = getRealtimeClient();

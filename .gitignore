@@ -2,10 +2,9 @@
 # Dependencies
 node_modules/
 
-# Build artifacts
-dist/
-build/
-target/
+# Logs and temp files
+*.log
+*.tmp
 
 # Environment
 .env
@@ -15,14 +14,6 @@ target/
 # Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# Logs
-*.log
-
-# Temp files
-*.tmp
 
 # Python
 __pycache__/
@@ -33,42 +24,31 @@ __pycache__/
 venv/
 .venv/
 .env
-.env.local
-.env.*
-.mypy_cache/
-.pytest_cache/
-.coverage
-coverage/
-htmlcov/
 
-# Node.js
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-node_modules/
+# Build outputs
 dist/
 build/
+target/
+.out
 
-# TypeScript/JavaScript
-*.tsbuildinfo
-.next/
-.nuxt/
-public/dist/
-
-# Compiled files
-*.exe
-*.dll
-*.so
-*.a
-*.obj
-*.out
-*.class
-
-# System files
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Archives
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*~
+*.swp
+*.swo
+
+# Compressed files
 *.zip
 *.gz
 *.tar
@@ -87,4 +67,8 @@ Thumbs.db
 *.Z
 *.lz
 *.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```
