@@ -20,14 +20,19 @@ export interface Job {
 
 export interface PromptTemplate {
   template_id: string;
+  id?: string;
   name: string;
-  stage: string;
-  content: string;
+  stage?: string;
+  type?: string;
+  content?: string;
   variables: string[];
-  version: number;
-  channel_id: string;
-  created_at: string;
-  updated_at: string;
+  version: number | string;
+  channel_id?: string;
+  genre?: string;
+  style?: string;
+  prompts?: any[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Scene {
@@ -85,4 +90,24 @@ export interface WebSocketMessage {
   type: 'job_started' | 'job_progress' | 'stage_completed' | 'stage_failed' | 'render_started' | 'render_completed' | 'logs_updated';
   data: any;
   timestamp: string;
+}
+
+export interface PipelineStage {
+  name: string;
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
+  started_at?: string;
+  completed_at?: string;
+  progress?: number;
+  message?: string;
+  error?: string;
+}
+
+export interface PipelineStatus {
+  job_id: string;
+  status: string;
+  current_stage: string | null;
+  stages: PipelineStage[];
+  progress: number;
+  created_at: string;
+  updated_at: string;
 }

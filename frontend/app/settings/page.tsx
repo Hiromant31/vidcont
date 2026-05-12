@@ -9,53 +9,115 @@ import type { Settings } from '@/types';
 export default function SettingsPage() {
   const queryClient = useQueryClient();
 
-  const { data: settings, isLoading, error } = useQuery({
+  const { data: settingsList, isLoading, error } = useQuery({
     queryKey: ['settings'],
     queryFn: () => settingsApi.get(),
   });
 
-  const updateMutation = useMutation({
-    mutationFn: (data: Partial<Settings>) => settingsApi.update(data),
+  const settings = settingsList?.[0] || null;
+
+  const createMutation = useMutation({
+    mutationFn: (data: Partial<Settings>) => settingsApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings created successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to create settings: ${error.message}`);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<Settings> }) => 
+      settingsApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings updated successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to update settings: ${error.message}`);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => settingsApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
+      alert('Settings deleted successfully!');
+    },
+    onError: (error) => {
+      alert(`Failed to delete settings: ${error.message}`);
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading settings</div>;
+  if (error) return <div>Error loading settings: {error.message}</div>;
 
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Settings</h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Provider Settings</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="text-sm font-medium">Provider</label>
-            <p className="text-muted-foreground">{settings?.ai_provider}</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium">Model</label>
-            <p className="text-muted-foreground">{settings?.model}</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium">Default Quality</label>
-            <p className="text-muted-foreground">{settings?.default_quality}p</p>
-          </div>
-          <div>
-            <label className="text-sm font-medium">Auto Continue Pipeline</label>
-            <p className="text-muted-foreground">
-              {settings?.auto_continue_pipeline ? 'Yes' : 'No'}
-            </p>
-          </div>
-          <Button onClick={() => updateMutation.mutate({ auto_continue_pipeline: !settings?.auto_continue_pipeline })}>
-            Toggle Auto Continue
-          </Button>
-        </CardContent>
-      </Card>
+      {!settings ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>No Settings Found</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              onClick={() => createMutation.mutate({
+                ai_provider: 'openai',
+                model: 'gpt-4',
+                default_quality: 1080,
+                auto_continue_pipeline: true,
+              })}
+            >
+              Create Default Settings
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>AI Provider Settings</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Provider</label>
+              <p className="text-muted-foreground">{settings.ai_provider}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Model</label>
+              <p className="text-muted-foreground">{settings.model}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Default Quality</label>
+              <p className="text-muted-foreground">{settings.default_quality}p</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Auto Continue Pipeline</label>
+              <p className="text-muted-foreground">
+                {settings.auto_continue_pipeline ? 'Yes' : 'No'}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                onClick={() => updateMutation.mutate({ 
+                  id: settings.settings_id, 
+                  data: { auto_continue_pipeline: !settings.auto_continue_pipeline } 
+                })}
+              >
+                Toggle Auto Continue
+              </Button>
+              <Button 
+                variant="destructive"
+                onClick={() => deleteMutation.mutate(settings.settings_id)}
+              >
+                Delete Settings
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

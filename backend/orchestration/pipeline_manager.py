@@ -1,6 +1,7 @@
 """
 Pipeline Manager - Оркестрация этапов генерации видео
 """
+from __future__ import annotations
 import asyncio
 from datetime import datetime
 from typing import Dict, List, Optional, Any
